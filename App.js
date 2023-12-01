@@ -26,24 +26,12 @@ export default function App() {
 
   // #endregion
 
-  // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
-  const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
-  // console.log(
-  //   filteredTodos.filter((item) => {
-  //     item.id;
-  //   }),
-  //   'filterTodos'
-  // );
-
-  const deleteTodo = () => {
-    console.log(filteredTodos[0].id);
-    let id = filteredTodos.filter((item) => {
-      item.id;
-    });
-    return id;
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  console.log(deleteTodo(), 'deleteTodo');
+  // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
+  const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
   return (
     <View style={styles.container}>
@@ -51,8 +39,11 @@ export default function App() {
       <Calendar onDayPress={onDayPress} style={styles.calenderWrap} />
       <Text style={styles.selectedDateText}>SelectedDate : {selectedDate}</Text>
       {/* TodoList 컴포넌트에 필터링된 Todo 목록과 추가 함수 전달 */}
-      <TodoList onAddTodo={addTodo} todos={filteredTodos} />
-      {/* <Button title='delete' onPress={deleteTodo} /> */}
+      <TodoList
+        onAddTodo={addTodo}
+        todos={filteredTodos}
+        onDeleteTodo={deleteTodo}
+      />
     </View>
   );
 }

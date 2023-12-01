@@ -9,7 +9,7 @@ import {
   Keyboard,
 } from 'react-native';
 
-const TodoList = ({ onAddTodo, todos }) => {
+const TodoList = ({ onAddTodo, todos, onDeleteTodo }) => {
   const [newTodo, setNewTodo] = useState('');
 
   const addTodo = () => {
@@ -21,8 +21,9 @@ const TodoList = ({ onAddTodo, todos }) => {
     }
   };
 
-  const deleteTodo = () => {
-    console.log(todos, deleteTodo);
+  const deleteTodo = (id) => {
+    //App 컴포넌트의 onDeleteTodo 에 delte 버튼에서 받은 item.id 를 넘겨준다.
+    onDeleteTodo(id);
   };
 
   return (
@@ -40,7 +41,13 @@ const TodoList = ({ onAddTodo, todos }) => {
         renderItem={({ item }) => (
           <View style={styles.todoItem}>
             <Text>{item.text}</Text>
-            <Button title='delte' onPress={deleteTodo} />
+            {/* deleteTodo 에 선택된 item.id 를 넘겨준다. */}
+            <Button
+              title='delete'
+              onPress={() => {
+                deleteTodo(item.id);
+              }}
+            />
           </View>
         )}
       />
