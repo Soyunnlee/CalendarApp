@@ -16,7 +16,8 @@
     "react-native-calendars": "^1.1302.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "prettier": "^2.8.7"
   },
   "private": true
 }

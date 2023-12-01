@@ -1,32 +1,46 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, FlatList, StyleSheet,Text } from 'react-native';
+import {
+  View,
+  TextInput,
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  Keyboard,
+} from 'react-native';
 
-const TodoList = () => {
-  const [todos, setTodos] = useState([]);
+const TodoList = ({ onAddTodo, todos }) => {
   const [newTodo, setNewTodo] = useState('');
 
   const addTodo = () => {
     if (newTodo.trim() !== '') {
-      setTodos([...todos, { id: Date.now().toString(), text: newTodo }]);
+      // App.js 에서 전달한 추가 함수 호출
+      onAddTodo(newTodo);
       setNewTodo('');
+      Keyboard.dismiss();
     }
+  };
+
+  const deleteTodo = () => {
+    console.log(todos, deleteTodo);
   };
 
   return (
     <View style={styles.todoListContainer}>
       <TextInput
         style={styles.input}
-        placeholder="Add a new todo"
+        placeholder='Add a new todo'
         value={newTodo}
         onChangeText={(text) => setNewTodo(text)}
       />
-      <Button title="Add" onPress={addTodo} />
+      <Button title='Add' onPress={addTodo} />
       <FlatList
         data={todos}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.todoItem}>
             <Text>{item.text}</Text>
+            <Button title='delte' onPress={deleteTodo} />
           </View>
         )}
       />
