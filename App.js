@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Calendar } from 'react-native-calendars';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { CalendarList, Calendar } from 'react-native-calendars';
 import TodoList from './TodoList.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -40,9 +40,15 @@ export default function App() {
   }, [todos]);
   //#endregion
 
-  // #region SelectedDate 날짜 선택시 호출 함수
+  // #region Date
+  // ## 앱이 시작될때 오늘 날짜로 선택한 날짜를 지정
+  useEffect(() => {
+    const todayDate = new Date().toISOString().split('T')[0];
+    setSelectedDate(todayDate);
+  }, []);
+
+  // ## SelectedDate 날짜 선택시 호출 함수
   const onDayPress = (day) => {
-    // selectedDate
     setSelectedDate(day.dateString);
   };
   // #endregion
@@ -69,10 +75,46 @@ export default function App() {
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
+  // 각 날짜에 해당하는 컴포넌트를 커스터마이징
+  const renderDayComponent = ({ date, state, marking }) => {
+    console.log(marking);
+    return (
+      <View>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: state === 'disabled' ? 'gray' : 'black',
+          }}
+        >
+          {date.day}
+        </Text>
+        {/* calendar 에 각 날짜에 해당하는 TodoList 를 렌더링 */}
+        {todos.map((item) => (
+          <Text key={item.id} style={styles.todoText}>
+            {date.dateString === item.date ? <Text>{item.text}</Text> : null}
+          </Text>
+        ))}
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       {/* 달력 컴포넌트 */}
-      <Calendar onDayPress={onDayPress} style={styles.calenderWrap} />
+      <Calendar
+        onDayPress={onDayPress}
+        // markedDates={{
+        //   [selectedDate]: {
+        //     selected: true,
+        //     selectedColor: '#EDF2FF',
+        //     selectedTextColor: '#0047FF',
+        //   },
+        // }}
+        markedDates={marking}
+        dayComponent={renderDayComponent}
+        style={styles.calenderWrap}
+      />
+
       <Text style={styles.selectedDateText}>SelectedDate : {selectedDate}</Text>
       {/* TodoList 컴포넌트에 필터링된 Todo 목록과 추가 함수 전달 */}
       <TodoList
@@ -85,6 +127,13 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  dayContainer: {
+    flex: 1,
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   container: {
     flex: 1,
     marginTop: '15%',
