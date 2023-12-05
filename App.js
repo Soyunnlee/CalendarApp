@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { CalendarList, Calendar } from 'react-native-calendars';
 import TodoList from './component/TodoList.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DayComponent from './component/DayComponent.js';
+import tw from 'tailwind-react-native-classnames';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(''); // 선택된 날짜 저장할 상태 변수
@@ -68,35 +69,8 @@ export default function App() {
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
-  //#region Celendar (dayComponent) 각 날짜에 해당하는 컴포넌트 커스터마이징
-  // const renderDayComponent = ({ date, state }) => {
-  //   return (
-  //     <View>
-  //       <Text
-  //         onPress={() => {
-  //           // 날짜 선택시 호출 함수
-  //           setSelectedDate(date.dateString);
-  //         }}
-  //         style={{
-  //           textAlign: 'center',
-  //           color: state === 'disabled' ? 'gray' : 'black',
-  //         }}
-  //       >
-  //         {date.day}
-  //       </Text>
-  //       {/* calendar 에 각 날짜에 해당하는 TodoList 를 렌더링 */}
-  //       {todos.map((item) => (
-  //         <Text key={item.id} style={styles.todoText}>
-  //           {date.dateString === item.date ? <Text>{item.text}</Text> : null}
-  //         </Text>
-  //       ))}
-  //     </View>
-  //   );
-  // };
-  //#endregion
-
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* 달력 컴포넌트 */}
 
       <Calendar
@@ -108,6 +82,20 @@ export default function App() {
           />
         )}
         style={styles.calenderWrap}
+        markingType={'custom'}
+        markedDates={{
+          '2023-12-05': {
+            customStyles: {
+              container: {
+                backgroundColor: 'green',
+              },
+              text: {
+                color: 'black',
+                fontWeight: 'bold',
+              },
+            },
+          },
+        }}
       />
 
       <Text style={styles.selectedDateText}>SelectedDate : {selectedDate}</Text>
@@ -118,7 +106,7 @@ export default function App() {
         todos={filteredTodos}
         onDeleteTodo={deleteTodo}
       />
-    </View>
+    </ScrollView>
   );
 }
 
@@ -135,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: '15%',
     // backgroundColor: '#000000',
     width: 'auto',
-    borderWidth: 4,
+    // borderWidth: 4,
     borderColor: '#ff0000',
   },
 

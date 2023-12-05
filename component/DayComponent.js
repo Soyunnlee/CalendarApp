@@ -1,18 +1,35 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import tw from 'tailwind-react-native-classnames';
 
 function DayComponent({ date, state, todos, setSelectedDate }) {
+  const todayDate = new Date().toISOString().split('T')[0];
+  console.log(setSelectedDate, 'setSelectedDate');
+
   return (
-    <View>
+    <View
+      style={[
+        tw`border-red-900 w-full flex flex-col h-20 `,
+        {
+          borderWidth: 2,
+        },
+      ]}
+    >
       <Text
         onPress={() => {
           // 날짜 선택시 호출 함수
           setSelectedDate(date.dateString);
         }}
-        style={{
-          textAlign: 'center',
-          color: state === 'disabled' ? 'gray' : 'black',
-        }}
+        style={[
+          tw`border-2 border-red-900  ${
+            state === 'disabled' ? 'text-gray-300' : ''
+          }`,
+          {
+            textAlign: 'center',
+            // borderWidth: 2,
+            // color: state === 'disabled' ? 'gray' : 'black',
+          },
+        ]}
       >
         {date.day}
       </Text>
@@ -26,14 +43,6 @@ function DayComponent({ date, state, todos, setSelectedDate }) {
   );
 }
 
-const styles = StyleSheet.create({
-  dayContainer: {
-    flex: 1,
-    margin: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  todoText: {}, // Todo 스타일 추가
-});
+const styles = StyleSheet.create({});
 
 export default DayComponent;
