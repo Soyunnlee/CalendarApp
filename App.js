@@ -9,6 +9,7 @@ import tw from 'tailwind-react-native-classnames';
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(''); // 선택된 날짜 저장할 상태 변수
   const [todos, setTodos] = useState([]); // Todo 목록을 저장할 상태 변수
+  let todayDate = new Date().toISOString().split('T')[0]; // 오늘 날짜 지정
 
   //#region (비동기) 앱 시작시 AsyncStorage에서 데이터 불러오기
   useEffect(() => {
@@ -41,10 +42,9 @@ export default function App() {
   //#endregion
 
   //#region 앱이 시작될때 오늘 날짜로 선택한 날짜를 지정
-  useEffect(() => {
-    const todayDate = new Date().toISOString().split('T')[0];
-    setSelectedDate(todayDate);
-  }, []);
+  // useEffect(() => {
+  //   setSelectedDate(todayDate);
+  // }, []);
   //#endregion
 
   //#region Todo 추가
@@ -69,8 +69,6 @@ export default function App() {
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
-  ////// Custom
-
   return (
     <ScrollView style={styles.container}>
       {/* 달력 컴포넌트 */}
@@ -84,10 +82,10 @@ export default function App() {
           />
         )}
         style={styles.calenderWrap}
-        // markingType={'custom'}
         markedDates={{
-          '2023-12-16': { selected: true, marked: true, color: '#50cebb' },
-          '2023-12-16': { marked: true },
+          // '2023-12-16': { selected: true, marked: true, color: '#50cebb' },
+          [todayDate]: { marked: true }, // 오늘날짜 넣기
+          [selectedDate]: { selected: true }, // 선택된 날짜 넣기
         }}
       />
 
