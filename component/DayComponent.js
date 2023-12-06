@@ -2,16 +2,16 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 
-function DayComponent({ date, state, todos, setSelectedDate }) {
-  const todayDate = new Date().toISOString().split('T')[0];
-  console.log(setSelectedDate, 'setSelectedDate');
-
+function DayComponent({ date, state, todos, setSelectedDate, marking = {} }) {
+  const isMArked = marking && marking.marked;
+  console.log(isMArked);
   return (
     <View
       style={[
         tw`border-red-900 w-full flex flex-col h-20 `,
         {
           borderWidth: 2,
+          backgroundColor: isMArked ? 'red' : 'blue',
         },
       ]}
     >
@@ -27,7 +27,7 @@ function DayComponent({ date, state, todos, setSelectedDate }) {
           {
             textAlign: 'center',
             // borderWidth: 2,
-            // color: state === 'disabled' ? 'gray' : 'black',
+            color: state === 'disabled' ? 'gray' : 'black',
           },
         ]}
       >

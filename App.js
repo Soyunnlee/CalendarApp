@@ -69,6 +69,8 @@ export default function App() {
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
+  ////// Custom
+
   return (
     <ScrollView style={styles.container}>
       {/* 달력 컴포넌트 */}
@@ -82,19 +84,10 @@ export default function App() {
           />
         )}
         style={styles.calenderWrap}
-        markingType={'custom'}
+        // markingType={'custom'}
         markedDates={{
-          '2023-12-05': {
-            customStyles: {
-              container: {
-                backgroundColor: 'green',
-              },
-              text: {
-                color: 'black',
-                fontWeight: 'bold',
-              },
-            },
-          },
+          '2023-12-16': { selected: true, marked: true, color: '#50cebb' },
+          '2023-12-16': { marked: true },
         }}
       />
 
