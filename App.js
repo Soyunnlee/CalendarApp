@@ -9,7 +9,7 @@ import tw from 'tailwind-react-native-classnames';
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(''); // 선택된 날짜 저장할 상태 변수
   const [todos, setTodos] = useState([]); // Todo 목록을 저장할 상태 변수
-  let todayDate = new Date().toISOString().split('T')[0]; // 오늘 날짜 지정
+  const todayDate = new Date().toISOString().split('T')[0]; // 오늘 날짜 지정
 
   //#region (비동기) 앱 시작시 AsyncStorage에서 데이터 불러오기
   useEffect(() => {
@@ -42,9 +42,9 @@ export default function App() {
   //#endregion
 
   //#region 앱이 시작될때 오늘 날짜로 선택한 날짜를 지정
-  // useEffect(() => {
-  //   setSelectedDate(todayDate);
-  // }, []);
+  useEffect(() => {
+    setSelectedDate(todayDate);
+  }, []);
   //#endregion
 
   //#region Todo 추가
@@ -69,6 +69,15 @@ export default function App() {
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
+  const renderContent = () => {
+    return (
+      <Fragment>
+        {renderText()}
+        {renderMarking()}
+      </Fragment>
+    );
+  };
+
   return (
     <ScrollView style={styles.container}>
       {/* 달력 컴포넌트 */}
@@ -81,15 +90,30 @@ export default function App() {
             setSelectedDate={setSelectedDate}
           />
         )}
-        style={styles.calenderWrap}
+        theme={{
+          arrowColor: 'orange',
+          'stylesheet.calendar.header': {
+            week: {
+              marginBottom: 10,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            },
+          },
+        }}
         markedDates={{
           // '2023-12-16': { selected: true, marked: true, color: '#50cebb' },
           [todayDate]: { marked: true }, // 오늘날짜 넣기
-          [selectedDate]: { selected: true }, // 선택된 날짜 넣기
+          [selectedDate]: {
+            selected: true,
+          }, // 선택된 날짜 넣기
         }}
       />
 
-      <Text style={styles.selectedDateText}>SelectedDate : {selectedDate}</Text>
+      <Text
+        style={[tw`text-center py-0.5 bg-gray-50 -mt-2`, { borderWidth: 0 }]}
+      >
+        SelectedDate : {selectedDate}
+      </Text>
 
       {/* TodoList 컴포넌트에 필터링된 Todo 목록과 추가 함수 전달 */}
       <TodoList
@@ -102,25 +126,10 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  dayContainer: {
-    flex: 1,
-    margin: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   container: {
     flex: 1,
-    marginTop: '15%',
-    // backgroundColor: '#000000',
+    marginTop: '10%',
     width: 'auto',
-    // borderWidth: 4,
     borderColor: '#ff0000',
   },
-
-  calenderWrap: {
-    // backgroundColor :'transparent',
-  },
-
-  selectedDateText: {},
 });

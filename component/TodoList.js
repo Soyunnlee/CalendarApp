@@ -27,7 +27,7 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo }) => {
   };
 
   return (
-    <View style={styles.todoListContainer}>
+    <View style={[styles.todoListContainer]}>
       <TextInput
         style={styles.input}
         placeholder='Add a new todo'
