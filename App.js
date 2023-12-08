@@ -66,17 +66,14 @@ export default function App() {
   };
   //#endregion
 
+  //#region Todo 수정
+  const editTodo = () => {
+    console.log(item.text);
+  };
+  //#endregion
+
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
-
-  const renderContent = () => {
-    return (
-      <Fragment>
-        {renderText()}
-        {renderMarking()}
-      </Fragment>
-    );
-  };
 
   return (
     <ScrollView style={styles.container}>
