@@ -22,7 +22,7 @@ function DayComponent({ date, state, todos, setSelectedDate, marking = {} }) {
     >
       <View
         style={[
-          tw`w-full flex flex-col h-16 border -mt-4 border-gray-50`,
+          tw`w-full flex flex-col h-16 border -mt-4 border-gray-50 py-1`,
           {
             // 선택된 날짜
             backgroundColor: isSelected ? '#F4FAFF' : '',
@@ -32,7 +32,7 @@ function DayComponent({ date, state, todos, setSelectedDate, marking = {} }) {
       >
         <Text
           style={[
-            tw`border-red-900 h-full `,
+            tw`h-full `,
             {
               textAlign: 'center',
               // 월마다 포함되는 일 만 Black 표시

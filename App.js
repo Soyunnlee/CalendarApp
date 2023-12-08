@@ -92,6 +92,8 @@ export default function App() {
         )}
         theme={{
           arrowColor: 'orange',
+          dotColor: '#00adf5',
+          textDayHeaderFontSize: 12,
           'stylesheet.calendar.header': {
             week: {
               marginBottom: 10,
@@ -109,10 +111,8 @@ export default function App() {
         }}
       />
 
-      <Text
-        style={[tw`text-center py-0.5 bg-gray-50 -mt-2`, { borderWidth: 0 }]}
-      >
-        SelectedDate : {selectedDate}
+      <Text style={[tw`text-center py-0.5 bg-gray-50 -mt-2 `]}>
+        {selectedDate}
       </Text>
 
       {/* TodoList 컴포넌트에 필터링된 Todo 목록과 추가 함수 전달 */}
