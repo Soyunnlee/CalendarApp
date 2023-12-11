@@ -2,24 +2,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   TextInput,
-  Button,
   FlatList,
   StyleSheet,
-  Text,
   Keyboard,
   TouchableOpacity,
   Image,
   Pressable,
 } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
-import {
-  SparklesIcon,
-  TrashIcon,
-  PencilIcon,
-} from 'react-native-heroicons/outline';
+import { TrashIcon, PencilIcon } from 'react-native-heroicons/outline';
 
-const TodoList = ({ onAddTodo, todos, onDeleteTodo, editTodo }) => {
+const TodoList = ({ onAddTodo, todos, onDeleteTodo }) => {
   const [newTodo, setNewTodo] = useState('');
+  const [inputResfs, setInputRefs] = useState({});
+
+  useEffect(() => {
+    let refs = {};
+    todos.forEach((todo) => (refs[todo.id] = React.createRef()));
+    setInputRefs(refs);
+  }, [todos]);
 
   const addTodo = () => {
     if (newTodo.trim() !== '') {
@@ -37,25 +38,11 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, editTodo }) => {
 
   // 수정
   const [editable, setEditable] = useState(false);
-  // input 참조
-  const inputRef = useRef(null);
 
-  // useEffect(() => {
-  //   if (editable) {
-  //     // input 이 (editable) 수정가능한 상태가 되면 .focus() 키보드를 올린다.
-  //     inputRef.current?.focus();
-  //   } else if (!inputRef.current?.focus()) {
-  //     console.log('dd');
-  //   }
-  // }, [editable]);
-
-  const ToggleEditable = () => {
-    // setEditable((preveditable) => !preveditable);
+  const editTodo = (id) => {
+    inputResfs[id].current.focus();
+    console.log(id);
     setEditable(true);
-    console.log(editable);
-    if (editable) {
-      inputRef.current?.focus();
-    }
   };
 
   return (
@@ -97,23 +84,22 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, editTodo }) => {
           <View
             style={[tw`flex flex-row border-b items-center justify-between`]}
           >
-            <Pressable
-              style={[tw`flex-1 pl-2 `]}
-              onPress={() => Keyboard.dismiss()}
-            >
-              <TextInput ref={inputRef} editable={editable}>
+            <Pressable style={[tw`flex-1 pl-2`]}>
+              <TextInput ref={inputResfs[item.id]} editable={editable}>
                 {item.text}
               </TextInput>
             </Pressable>
-            {/* deleteTodo 에 선택된 item.id 를 넘겨준다. */}
             {/* 수정버튼 */}
             <TouchableOpacity
-              style={[tw` py-2.5 px-1 mr-2`]}
-              onPress={ToggleEditable}
+              style={[tw`py-2.5 px-1 mr-2`]}
+              onPress={() => {
+                editTodo(item.id);
+              }}
             >
               <PencilIcon color='#767272' size='19' />
             </TouchableOpacity>
             {/* 삭제버튼 */}
+            {/* deleteTodo 에 선택된 item.id 를 넘겨준다. */}
             <TouchableOpacity
               style={[tw` py-2.5 px-1 mr-1.5`]}
               onPress={() => {
@@ -122,7 +108,6 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, editTodo }) => {
             >
               <TrashIcon color='#767272' size='20' />
             </TouchableOpacity>
-            {/* </View> */}
           </View>
         )}
       />
@@ -130,12 +115,6 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, editTodo }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  todoItem: {
-    // borderBottomWidth: 1,
-    // borderColor: 'gray',
-    // padding: 10,
-  },
-});
+const styles = StyleSheet.create({});
 
 export default TodoList;
