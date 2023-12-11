@@ -67,8 +67,8 @@ export default function App() {
   //#endregion
 
   //#region Todo 수정
-  const editTodo = () => {
-    console.log(item.text);
+  const updateTodo = (id, updateTodo) => {
+    console.log(id, updateTodo);
   };
   //#endregion
 
@@ -117,6 +117,7 @@ export default function App() {
         onAddTodo={addTodo}
         todos={filteredTodos}
         onDeleteTodo={deleteTodo}
+        onUpdateTodo={updateTodo}
       />
     </ScrollView>
   );
