@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   TextInput,
+  Button,
   FlatList,
   StyleSheet,
   Keyboard,
@@ -14,13 +15,8 @@ import { TrashIcon, PencilIcon } from 'react-native-heroicons/outline';
 
 const TodoList = ({ onAddTodo, todos, onDeleteTodo }) => {
   const [newTodo, setNewTodo] = useState('');
-  const [inputResfs, setInputRefs] = useState({});
-
-  useEffect(() => {
-    let refs = {};
-    todos.forEach((todo) => (refs[todo.id] = React.createRef()));
-    setInputRefs(refs);
-  }, [todos]);
+  const [focusedInputId, setFocusedInputId] = useState(null);
+  const inputRef = useRef(null);
 
   const addTodo = () => {
     if (newTodo.trim() !== '') {
@@ -37,13 +33,17 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo }) => {
   };
 
   // 수정
-  const [editable, setEditable] = useState(false);
-
-  const editTodo = (id) => {
-    inputResfs[id].current.focus();
-    console.log(id);
-    setEditable(true);
+  const editMode = (id) => {
+    console.log('dd');
+    setFocusedInputId(id);
   };
+
+  // ref 가 설정된 후에 focus 메서드를 호출하도록 설정
+  useEffect(() => {
+    if (focusedInputId !== null && inputRef.current !== null) {
+      inputRef.current.focus();
+    }
+  }, [focusedInputId]);
 
   return (
     <View style={[]}>
@@ -84,22 +84,34 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo }) => {
           <View
             style={[tw`flex flex-row border-b items-center justify-between`]}
           >
-            <Pressable style={[tw`flex-1 pl-2`]}>
-              <TextInput ref={inputResfs[item.id]} editable={editable}>
+            <Pressable
+              style={[tw`flex-1 pl-2 `]}
+              onPress={() => Keyboard.dismiss()}
+            >
+              <TextInput
+                ref={(ref) => {
+                  if (focusedInputId === item.id) {
+                    inputRef.current = ref;
+                  }
+                }}
+                style={{ borderWidth: focusedInputId === item.id ? '1' : 0 }}
+                multiline
+                editable={focusedInputId === item.id}
+              >
                 {item.text}
               </TextInput>
             </Pressable>
+            {/* deleteTodo 에 선택된 item.id 를 넘겨준다. */}
             {/* 수정버튼 */}
             <TouchableOpacity
-              style={[tw`py-2.5 px-1 mr-2`]}
+              style={[tw` py-2.5 px-1 mr-2`]}
               onPress={() => {
-                editTodo(item.id);
+                editMode(item.id);
               }}
             >
               <PencilIcon color='#767272' size='19' />
             </TouchableOpacity>
             {/* 삭제버튼 */}
-            {/* deleteTodo 에 선택된 item.id 를 넘겨준다. */}
             <TouchableOpacity
               style={[tw` py-2.5 px-1 mr-1.5`]}
               onPress={() => {
@@ -108,6 +120,7 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo }) => {
             >
               <TrashIcon color='#767272' size='20' />
             </TouchableOpacity>
+            {/* </View> */}
           </View>
         )}
       />
