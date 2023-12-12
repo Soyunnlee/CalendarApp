@@ -68,7 +68,11 @@ export default function App() {
 
   //#region Todo 수정
   const updateTodo = (id, updateTodo) => {
-    console.log(id, updateTodo);
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, text: updateTodo } : todo
+      )
+    );
   };
   //#endregion
 

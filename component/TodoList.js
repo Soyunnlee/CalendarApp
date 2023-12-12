@@ -107,9 +107,8 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, onUpdateTodo }) => {
                     inputRef.current = ref;
                   }
                 }}
-                style={{ borderWidth: focusedInputId === item.id ? '1' : 0 }}
+                style={{ borderWidth: focusedInputId === item.id ? 1 : 0 }}
                 editable={focusedInputId === item.id}
-                // value={item.text}
                 value={focusedInputId === item.id ? updateTodo : item.text}
                 onChangeText={(text) => setUpdateTodo(text)}
               >
