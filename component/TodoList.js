@@ -109,10 +109,9 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, onUpdateTodo }) => {
                 }}
                 style={{ borderWidth: focusedInputId === item.id ? 1 : 0 }}
                 editable={focusedInputId === item.id}
-                value={focusedInputId === item.id ? updateTodo : item.text}
                 onChangeText={(text) => setUpdateTodo(text)}
               >
-                {/* {item.text} */}
+                {item.text}
               </TextInput>
             </Pressable>
             {/* deleteTodo 에 선택된 item.id 를 넘겨준다. */}
