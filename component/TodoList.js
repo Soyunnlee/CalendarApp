@@ -38,8 +38,9 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, onUpdateTodo }) => {
   };
 
   //#region 수정
-  const editMode = (id) => {
+  const editMode = (id, text) => {
     setFocusedInputId(id);
+    setUpdateTodo(text); // 현재 todo의 택스트를 수정 상태에 설정
   };
 
   const saveUpdate = (id) => {
@@ -132,7 +133,7 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, onUpdateTodo }) => {
               <TouchableOpacity
                 style={[tw` py-2.5 px-1 mr-2`]}
                 onPress={() => {
-                  editMode(item.id);
+                  editMode(item.id, item.text); // 수정모드 활성화시 현재 텍스트를 인자로 전달.
                 }}
               >
                 <PencilIcon color='#767272' size='19' />
