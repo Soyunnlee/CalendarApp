@@ -92,7 +92,7 @@ export default function App() {
           />
         )}
         theme={{
-          arrowColor: 'orange',
+          arrowColor: '#222B45',
           dotColor: '#00adf5',
           textDayHeaderFontSize: 12,
           'stylesheet.calendar.header': {
@@ -100,6 +100,16 @@ export default function App() {
               marginBottom: 10,
               flexDirection: 'row',
               justifyContent: 'space-between',
+            },
+            arrow: {
+              paddingHorizontal: 15,
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: '#CED3DE',
+              width: 30,
+              height: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
             },
           },
         }}
