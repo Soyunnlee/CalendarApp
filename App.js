@@ -70,7 +70,9 @@ export default function App() {
   const updateTodo = (id, updateTodo) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, text: updateTodo } : todo
+        todo.id === id && updateTodo.trim() !== ''
+          ? { ...todo, text: updateTodo }
+          : todo
       )
     );
   };
