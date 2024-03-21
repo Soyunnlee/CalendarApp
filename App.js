@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { CalendarList, Calendar } from 'react-native-calendars';
 import TodoList from './component/TodoList.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -82,7 +82,9 @@ export default function App() {
   return (
     <ScrollView style={styles.container}>
       {/* 달력 컴포넌트 */}
-
+      <View style={[tw`flex-row justify-between items-center px-4 py-2`]}>
+        <Button title='+'></Button>
+      </View>
       <Calendar
         dayComponent={(props) => (
           <DayComponent
