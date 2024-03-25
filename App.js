@@ -146,17 +146,16 @@ export default function App() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* 달력 컴포넌트 */}
-      <View style={[tw`flex-row justify-between items-center px-4 py-2`]}>
-        {/* 달력 리스트 버튼 */}
+      {/* Header */}
+      <View style={[tw`flex-row items-center py-2 pt-3 justify-between px-4`]}>
+        {/* 월 메모 버튼 */}
         <TouchableOpacity
-          onPress={() => {
-            setCalendarListModalVisible(true);
-          }}
+          onPress={toggleModal}
+          style={[tw``]} // Tailwind CSS 사용
         >
           <Image
-            source={require('./assets/ListIcon.png')}
-            style={[tw`w-5 h-5`]}
+            source={require('./assets/MonthIcon.png')} // 이미지 경로
+            style={[tw`w-8 h-8`]} // 이미지 크기
           />
         </TouchableOpacity>
 
@@ -170,18 +169,21 @@ export default function App() {
           <Text style={[tw`text-gray-500`]}>Today</Text>
         </TouchableOpacity>
 
-        {/* 월 메모 버튼 */}
+        {/* 달력 리스트 버튼 */}
         <TouchableOpacity
-          onPress={toggleModal}
-          style={[tw`p-2`]} // Tailwind CSS 사용
+          style={[tw`pr-0.5`]}
+          onPress={() => {
+            setCalendarListModalVisible(true);
+          }}
         >
           <Image
-            source={require('./assets/MonthIcon.png')} // 이미지 경로
-            style={[tw`w-8 h-8`]} // 이미지 크기
+            source={require('./assets/ListIcon.png')}
+            style={[tw`w-5 h-5`]}
           />
         </TouchableOpacity>
       </View>
-      {/* Calendar List Modal */}
+
+      {/* Calendar List 모달 */}
       <CalendarListModal
         modalVisible={calendarListmodalVisible}
         setModalVisible={setCalendarListModalVisible}
@@ -190,36 +192,6 @@ export default function App() {
       />
 
       {/* 메모 모달 */}
-      {/* <Modal
-        animationType='slide'
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={toggleModal}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View
-              style={{
-                alignSelf: 'stretch',
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                paddingRight: '1%',
-              }}
-            >
-              <TouchableOpacity style={styles.button} onPress={toggleModal}>
-                <Text>닫기</Text>
-              </TouchableOpacity>
-            </View>
-            <TextInput
-              style={styles.textInput}
-              multiline={true}
-              placeholder='메모를 입력하세요'
-              value={memo}
-              onChangeText={setMemo}
-            />
-          </View>
-        </View>
-      </Modal> */}
       <MemoModal
         isModalVisible={isModalVisible}
         toggleModal={toggleModal}
@@ -227,6 +199,7 @@ export default function App() {
         setMemo={setMemo}
       />
 
+      {/* 달력 컴포넌트 */}
       <Calendar
         key={selectedDate}
         current={selectedDate}
@@ -287,43 +260,5 @@ const styles = StyleSheet.create({
     marginTop: '10%',
     width: 'auto',
     borderColor: '#ff0000',
-  },
-  // 월 메모 모달
-  centeredView: {
-    flex: 1,
-    backgroundColor: 'black',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 배경
-  },
-  modalView: {
-    // margin: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 5,
-    // minWidth: 300,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  textInput: {
-    minWidth: 300,
-    width: '80%',
-    minHeight: '30%',
-    height: 'auto',
-    margin: 12,
-    borderWidth: 1,
-    borderColor: '#CED3DE',
-    padding: 10,
-  },
-  button: {
-    padding: 10,
-    elevation: 2,
   },
 });
