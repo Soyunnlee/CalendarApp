@@ -162,15 +162,25 @@ export default function App() {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <View
+              style={{
+                alignSelf: 'stretch',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                paddingRight: '1%',
+              }}
+            >
+              <TouchableOpacity style={styles.button} onPress={toggleModal}>
+                <Text>닫기</Text>
+              </TouchableOpacity>
+            </View>
             <TextInput
               style={styles.textInput}
+              multiline={true}
               placeholder='월 메모를 입력하세요'
               value={monthMemo}
               onChangeText={setMonthMemo}
             />
-            <TouchableOpacity style={styles.button} onPress={toggleModal}>
-              <Text>닫기</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -245,10 +255,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 배경
   },
   modalView: {
-    margin: 20,
+    // margin: 10,
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
+    borderRadius: 10,
+    padding: 5,
+    // minWidth: 300,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -260,16 +271,17 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   textInput: {
-    width: 200,
-    height: 40,
+    minWidth: 300,
+    width: '80%',
+    minHeight: '30%',
+    height: 'auto',
     margin: 12,
     borderWidth: 1,
+    borderColor: '#CED3DE',
     padding: 10,
   },
   button: {
-    borderRadius: 20,
     padding: 10,
     elevation: 2,
-    backgroundColor: '#2196F3',
   },
 });
