@@ -17,8 +17,8 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(''); // 선택된 날짜 저장할 상태 변수
   const [todos, setTodos] = useState([]); // Todo 목록을 저장할 상태 변수
   const todayDate = new Date().toISOString().split('T')[0]; // 오늘 날짜 지정
-
-  const [modalVisible, setModalVisible] = useState(false); // 모달 상태
+  const [calendarListmodalVisible, setCalendarListModalVisible] =
+    useState(false); // Calendar List모달 상태
 
   //#region (비동기) 앱 시작시 AsyncStorage에서 데이터 불러오기
   useEffect(() => {
@@ -88,10 +88,12 @@ export default function App() {
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
-  const onDateSelect = (date) => {
-    setSelectedDate(date.dateString);
-    setModalVisible(false);
+  //#region ClaenderList 에서 날짜 선택시 호출 함수
+  const onDateSelect = (day) => {
+    setSelectedDate(day.dateString);
+    setCalendarListModalVisible(false);
   };
+  //#endregion
 
   return (
     <ScrollView style={styles.container}>
@@ -100,7 +102,7 @@ export default function App() {
         <Button
           title='+'
           onPress={() => {
-            setModalVisible(true);
+            setCalendarListModalVisible(true);
           }}
         ></Button>
       </View>
@@ -108,15 +110,15 @@ export default function App() {
       <Modal
         animationType='slide'
         transparent={false}
-        visible={modalVisible}
+        visible={calendarListmodalVisible}
         onRequestClose={() => {
-          setModalVisible(!modalVisible);
+          setCalendarListModalVisible(!calendarListmodalVisible);
         }}
       >
         <View style={styles.modalView}>
           <Button
             title='Close'
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => setModalVisible(!calendarListmodalVisible)}
           />
           <CalendarList
             onDayPress={onDateSelect}
@@ -130,19 +132,13 @@ export default function App() {
                 selectedColor: '#F4FAFF',
               },
             }}
-            // dayComponent={({ date, state }) => (
-            //   <DayComponent
-            //     date={date}
-            //     state={state}
-            //     setSelectedDate={date}
-            //     selectedDate={date}
-            //   />
-            // )}
           />
         </View>
       </Modal>
 
       <Calendar
+        key={selectedDate}
+        current={selectedDate}
         dayComponent={(props) => (
           <DayComponent
             {...props}
