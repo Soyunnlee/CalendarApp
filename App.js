@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Button,
+  Modal,
+} from 'react-native';
 import { CalendarList, Calendar } from 'react-native-calendars';
 import TodoList from './component/TodoList.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,6 +17,8 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(''); // 선택된 날짜 저장할 상태 변수
   const [todos, setTodos] = useState([]); // Todo 목록을 저장할 상태 변수
   const todayDate = new Date().toISOString().split('T')[0]; // 오늘 날짜 지정
+
+  const [modalVisible, setModalVisible] = useState(false); // 모달 상태
 
   //#region (비동기) 앱 시작시 AsyncStorage에서 데이터 불러오기
   useEffect(() => {
@@ -79,12 +88,60 @@ export default function App() {
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
+  const onDateSelect = (date) => {
+    setSelectedDate(date.dateString);
+    setModalVisible(false);
+  };
+
   return (
     <ScrollView style={styles.container}>
       {/* 달력 컴포넌트 */}
       <View style={[tw`flex-row justify-between items-center px-4 py-2`]}>
-        <Button title='+'></Button>
+        <Button
+          title='+'
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        ></Button>
       </View>
+
+      <Modal
+        animationType='slide'
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.modalView}>
+          <Button
+            title='Close'
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+          <CalendarList
+            onDayPress={onDateSelect}
+            pastScrollRange={12}
+            futureScrollRange={12}
+            scrollEnabled={true}
+            showScrollIndicator={true}
+            markedDates={{
+              [selectedDate]: {
+                selected: true,
+                selectedColor: '#F4FAFF',
+              },
+            }}
+            // dayComponent={({ date, state }) => (
+            //   <DayComponent
+            //     date={date}
+            //     state={state}
+            //     setSelectedDate={date}
+            //     selectedDate={date}
+            //   />
+            // )}
+          />
+        </View>
+      </Modal>
+
       <Calendar
         dayComponent={(props) => (
           <DayComponent
@@ -145,5 +202,10 @@ const styles = StyleSheet.create({
     marginTop: '10%',
     width: 'auto',
     borderColor: '#ff0000',
+  },
+
+  modalView: {
+    marginTop: 50,
+    marginBottom: 20,
   },
 });
