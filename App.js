@@ -25,7 +25,7 @@ export default function App() {
     useState(false); // Calendar List모달 상태
   //#region 월 메모에 쓰이는 상태변수
   const [isModalVisible, setModalVisible] = useState(false); // 모달 가시성 상태
-  const [monthMemo, setMonthMemo] = useState(''); // 월 메모 텍스트 상태
+  const [memo, setMemo] = useState(''); // 월 메모 텍스트 상태
   //#endregion
 
   //#region 월 메모 모달
@@ -37,9 +37,9 @@ export default function App() {
   useEffect(() => {
     const loadMemo = async () => {
       try {
-        const memoValue = await AsyncStorage.getItem('monthMemo');
+        const memoValue = await AsyncStorage.getItem('memo');
         if (memoValue !== null) {
-          setMonthMemo(JSON.parse(memoValue));
+          setMemo(JSON.parse(memoValue));
         }
       } catch (e) {
         console.error('메모 불러오기 실패:', e);
@@ -53,9 +53,9 @@ export default function App() {
     // 모달이 닫힐 때만 메모 저장
     const saveMemo = async () => {
       try {
-        if (monthMemo) {
+        if (memo) {
           // 메모가 있을 때만 저장
-          await AsyncStorage.setItem('monthMemo', JSON.stringify(monthMemo)); // 메모를 문자열로 변환하여 저장
+          await AsyncStorage.setItem('memo', JSON.stringify(memo)); // 메모를 문자열로 변환하여 저장
         }
       } catch (e) {
         console.error('메모 저장 실패:', e);
@@ -65,7 +65,7 @@ export default function App() {
     if (!isModalVisible) {
       saveMemo();
     }
-  }, [isModalVisible, monthMemo]);
+  }, [isModalVisible, memo]);
   //#endregion
 
   //#region (비동기) 앱 시작시 AsyncStorage에서 데이터 불러오기
@@ -212,9 +212,9 @@ export default function App() {
             <TextInput
               style={styles.textInput}
               multiline={true}
-              placeholder='월 메모를 입력하세요'
-              value={monthMemo}
-              onChangeText={setMonthMemo}
+              placeholder='메모를 입력하세요'
+              value={memo}
+              onChangeText={setMemo}
             />
           </View>
         </View>
