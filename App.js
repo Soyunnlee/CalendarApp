@@ -6,8 +6,11 @@ import {
   ScrollView,
   Button,
   Modal,
+  Image,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
-import { CalendarList, Calendar } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import TodoList from './component/TodoList.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DayComponent from './component/DayComponent.js';
@@ -20,6 +23,16 @@ export default function App() {
   const todayDate = new Date().toISOString().split('T')[0]; // 오늘 날짜 지정
   const [calendarListmodalVisible, setCalendarListModalVisible] =
     useState(false); // Calendar List모달 상태
+  //#region 월 메모에 쓰이는 상태변수
+  const [isModalVisible, setModalVisible] = useState(false); // 모달 가시성 상태
+  const [monthMemo, setMonthMemo] = useState(''); // 월 메모 텍스트 상태
+  //#endregion
+
+  //#region 월 메모 모달
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  //#endregion
 
   //#region (비동기) 앱 시작시 AsyncStorage에서 데이터 불러오기
   useEffect(() => {
@@ -100,14 +113,39 @@ export default function App() {
     <ScrollView style={styles.container}>
       {/* 달력 컴포넌트 */}
       <View style={[tw`flex-row justify-between items-center px-4 py-2`]}>
-        <Button
-          title='+'
+        {/* 달력 리스트 버튼 */}
+        <TouchableOpacity
           onPress={() => {
             setCalendarListModalVisible(true);
           }}
-        ></Button>
-      </View>
+        >
+          <Image
+            source={require('./assets/ListIcon.png')}
+            style={[tw`w-5 h-5`]}
+          />
+        </TouchableOpacity>
 
+        {/* Today 버튼 */}
+        <TouchableOpacity
+          onPress={() => {
+            setSelectedDate(todayDate);
+          }}
+          style={[tw`bg-gray-100 text-black rounded-md px-3.5 py-1.5`]}
+        >
+          <Text style={[tw`text-gray-500`]}>Today</Text>
+        </TouchableOpacity>
+
+        {/* 월 메모 버튼 */}
+        <TouchableOpacity
+          onPress={toggleModal}
+          style={[tw`p-2`]} // Tailwind CSS 사용
+        >
+          <Image
+            source={require('./assets/MonthIcon.png')} // 이미지 경로
+            style={[tw`w-8 h-8`]} // 이미지 크기
+          />
+        </TouchableOpacity>
+      </View>
       {/* Calendar List Modal */}
       <CalendarListModal
         modalVisible={calendarListmodalVisible}
@@ -115,6 +153,27 @@ export default function App() {
         onDateSelect={onDateSelect}
         selectedDate={selectedDate}
       />
+      {/* 월 메모 모달 */}
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TextInput
+              style={styles.textInput}
+              placeholder='월 메모를 입력하세요'
+              value={monthMemo}
+              onChangeText={setMonthMemo}
+            />
+            <TouchableOpacity style={styles.button} onPress={toggleModal}>
+              <Text>닫기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       <Calendar
         key={selectedDate}
@@ -156,11 +215,9 @@ export default function App() {
           }, // 선택된 날짜 넣기
         }}
       />
-
       <Text style={[tw`text-center py-0.5 bg-gray-50 -mt-2 `]}>
         {selectedDate}
       </Text>
-
       {/* TodoList 컴포넌트에 필터링된 Todo 목록과 추가 함수 전달 */}
       <TodoList
         onAddTodo={addTodo}
@@ -179,9 +236,40 @@ const styles = StyleSheet.create({
     width: 'auto',
     borderColor: '#ff0000',
   },
-
+  // 월 메모 모달
+  centeredView: {
+    flex: 1,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 배경
+  },
   modalView: {
-    marginTop: 50,
-    marginBottom: 20,
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  textInput: {
+    width: 200,
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: '#2196F3',
   },
 });
