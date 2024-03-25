@@ -88,8 +88,8 @@ export default function App() {
   // 선택한 날짜와 todo 의 날짜가 일치한 것만 필터링
   const filteredTodos = todos.filter((todo) => todo.date === selectedDate);
 
-  const onDateSelect = (date) => {
-    setSelectedDate(date.dateString);
+  const onDateSelect = (day) => {
+    setSelectedDate(day.dateString);
     setModalVisible(false);
   };
 
@@ -130,19 +130,13 @@ export default function App() {
                 selectedColor: '#F4FAFF',
               },
             }}
-            // dayComponent={({ date, state }) => (
-            //   <DayComponent
-            //     date={date}
-            //     state={state}
-            //     setSelectedDate={date}
-            //     selectedDate={date}
-            //   />
-            // )}
           />
         </View>
       </Modal>
 
       <Calendar
+        key={selectedDate}
+        current={selectedDate}
         dayComponent={(props) => (
           <DayComponent
             {...props}
