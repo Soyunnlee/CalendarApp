@@ -1,24 +1,24 @@
 import React from 'react';
-import { StyleSheet, Modal, View, Button } from 'react-native';
+import { Modal, View, Button, StyleSheet } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 
-function CalendarListModal({
-  modalVisiable,
+const CalendarListModal = ({
+  modalVisible,
   setModalVisible,
   onDateSelect,
   selectedDate,
-}) {
+}) => {
   return (
     <Modal
       animationType='slide'
       transparent={false}
-      visible={modalVisiable}
+      visible={modalVisible}
       onRequestClose={() => {
-        setModalVisible(!modalVisiable);
+        setModalVisible(!modalVisible);
       }}
     >
       <View style={styles.modalView}>
-        <Button title='Close' onPress={() => setModalVisible(!modalVisiable)} />
+        <Button title='Close' onPress={() => setModalVisible(!modalVisible)} />
         <CalendarList
           onDayPress={onDateSelect}
           pastScrollRange={12}
@@ -35,7 +35,7 @@ function CalendarListModal({
       </View>
     </Modal>
   );
-}
+};
 
 const styles = StyleSheet.create({
   modalView: {

@@ -12,6 +12,7 @@ import TodoList from './component/TodoList.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DayComponent from './component/DayComponent.js';
 import tw from 'tailwind-react-native-classnames';
+import CalendarListModal from './component/CalendarListModal.js';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(''); // 선택된 날짜 저장할 상태 변수
@@ -107,38 +108,15 @@ export default function App() {
         ></Button>
       </View>
 
-      <Modal
-        animationType='slide'
-        transparent={false}
-        visible={calendarListmodalVisible}
-        onRequestClose={() => {
-          setCalendarListModalVisible(!calendarListmodalVisible);
-        }}
-      >
-        <View style={styles.modalView}>
-          <Button
-            title='Close'
-            onPress={() => setModalVisible(!calendarListmodalVisible)}
-          />
-          <CalendarList
-            onDayPress={onDateSelect}
-            pastScrollRange={12}
-            futureScrollRange={12}
-            scrollEnabled={true}
-            showScrollIndicator={true}
-            markedDates={{
-              [selectedDate]: {
-                selected: true,
-                selectedColor: '#F4FAFF',
-              },
-            }}
-          />
-        </View>
-      </Modal>
+      {/* Calendar List Modal */}
+      <CalendarListModal
+        modalVisible={calendarListmodalVisible}
+        setModalVisible={setCalendarListModalVisible}
+        onDateSelect={onDateSelect}
+        selectedDate={selectedDate}
+      />
 
       <Calendar
-        key={selectedDate}
-        current={selectedDate}
         key={selectedDate}
         current={selectedDate}
         dayComponent={(props) => (
