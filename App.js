@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -29,9 +29,43 @@ export default function App() {
   //#endregion
 
   //#region 월 메모 모달
-  const toggleModal = () => {
+  // 앱 시작시 메모 불러오기
+  const toggleModal = async () => {
     setModalVisible(!isModalVisible);
   };
+
+  useEffect(() => {
+    const loadMemo = async () => {
+      try {
+        const memoValue = await AsyncStorage.getItem('monthMemo');
+        if (memoValue !== null) {
+          setMonthMemo(JSON.parse(memoValue));
+        }
+      } catch (e) {
+        console.error('메모 불러오기 실패:', e);
+      }
+    };
+
+    loadMemo();
+  }, []);
+
+  useEffect(() => {
+    // 모달이 닫힐 때만 메모 저장
+    const saveMemo = async () => {
+      try {
+        if (monthMemo) {
+          // 메모가 있을 때만 저장
+          await AsyncStorage.setItem('monthMemo', JSON.stringify(monthMemo)); // 메모를 문자열로 변환하여 저장
+        }
+      } catch (e) {
+        console.error('메모 저장 실패:', e);
+      }
+    };
+
+    if (!isModalVisible) {
+      saveMemo();
+    }
+  }, [isModalVisible, monthMemo]);
   //#endregion
 
   //#region (비동기) 앱 시작시 AsyncStorage에서 데이터 불러오기
@@ -153,7 +187,8 @@ export default function App() {
         onDateSelect={onDateSelect}
         selectedDate={selectedDate}
       />
-      {/* 월 메모 모달 */}
+
+      {/* 메모 모달 */}
       <Modal
         animationType='slide'
         transparent={true}
