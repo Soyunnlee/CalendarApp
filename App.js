@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DayComponent from './component/DayComponent.js';
 import tw from 'tailwind-react-native-classnames';
 import CalendarListModal from './component/CalendarListModal.js';
+import MemoModal from './component/MemoModal.js';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(''); // 선택된 날짜 저장할 상태 변수
@@ -189,7 +190,7 @@ export default function App() {
       />
 
       {/* 메모 모달 */}
-      <Modal
+      {/* <Modal
         animationType='slide'
         transparent={true}
         visible={isModalVisible}
@@ -218,7 +219,13 @@ export default function App() {
             />
           </View>
         </View>
-      </Modal>
+      </Modal> */}
+      <MemoModal
+        isModalVisible={isModalVisible}
+        toggleModal={toggleModal}
+        memo={memo}
+        setMemo={setMemo}
+      />
 
       <Calendar
         key={selectedDate}
