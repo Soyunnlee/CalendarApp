@@ -139,6 +139,8 @@ export default function App() {
       <Calendar
         key={selectedDate}
         current={selectedDate}
+        key={selectedDate}
+        current={selectedDate}
         dayComponent={(props) => (
           <DayComponent
             {...props}
