@@ -18,7 +18,19 @@ const CalendarListModal = ({
       }}
     >
       <View style={styles.modalView}>
-        <Button title='Close' onPress={() => setModalVisible(!modalVisible)} />
+        {/* <Button title='Close' onPress={() => setModalVisible(!modalVisible)} /> */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            paddingRight: 15,
+          }}
+        >
+          <Button
+            title='Close'
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+        </View>
         <CalendarList
           onDayPress={onDateSelect}
           pastScrollRange={12}
@@ -29,6 +41,7 @@ const CalendarListModal = ({
             [selectedDate]: {
               selected: true,
               selectedColor: '#F4FAFF',
+              selectedTextColor: 'blue',
             },
           }}
         />
