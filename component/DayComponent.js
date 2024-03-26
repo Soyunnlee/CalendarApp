@@ -62,9 +62,9 @@ function DayComponent({ date, state, todos, setSelectedDate, marking = {} }) {
             </Text>
             {/* calendar 에 각 날짜에 해당하는 TodoList 를 렌더링 */}
             {todos.map((item) => (
-              <View key={item.id} style={tw`mt-0.5`}>
+              <View key={item.id}>
                 {date.dateString === item.date ? (
-                  <Text numberOfLines={1} style={tw``}>
+                  <Text numberOfLines={1} style={styles.todotext}>
                     {item.text}
                   </Text>
                 ) : null}
@@ -77,6 +77,11 @@ function DayComponent({ date, state, todos, setSelectedDate, marking = {} }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  todotext: {
+    fontSize: 11,
+    color: '#626262',
+  },
+});
 
 export default DayComponent;

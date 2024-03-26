@@ -154,8 +154,8 @@ export default function App() {
           style={[tw``]} // Tailwind CSS 사용
         >
           <Image
-            source={require('./assets/MonthIcon.png')} // 이미지 경로
-            style={[tw`w-8 h-8`]} // 이미지 크기
+            source={require('./assets/MemoIcon.png')} // 이미지 경로
+            style={[tw`w-7 h-7`]} // 이미지 크기
           />
         </TouchableOpacity>
 
