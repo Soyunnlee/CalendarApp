@@ -95,7 +95,9 @@ const TodoList = ({ onAddTodo, todos, onDeleteTodo, onUpdateTodo }) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View
-            style={[tw`flex flex-row border-b items-center justify-between`]}
+            style={[
+              tw`flex flex-row border-b items-center justify-between border-gray-300`,
+            ]}
           >
             {/* todolist */}
             <Pressable
